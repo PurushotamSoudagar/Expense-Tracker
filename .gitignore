@@ -1,0 +1,29 @@
+# Ignore Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+[Bb]uild/
+[Bb]uilds/
+
+# Rider
+.idea/
+
+# Logs
+*.log
+
+# Others
+*.db
+*.sqlite
+*.bak
+*.mdf
+*.ldf
+
+# OS-specific
+.DS_Store
+Thumbs.db
