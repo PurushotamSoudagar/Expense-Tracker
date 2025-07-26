@@ -31,3 +31,48 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/*Radio Button Group*/
+
+.e-btn-group.custom-rbt-group {
+    width: 100%;
+    display: flex;
+    background-color: transparent;
+}
+
+    .e-btn-group.custom-rbt-group .e-btn {
+        width: 50%;
+        text-align: center;
+        background-color: #2a2f36; /* Darker background for neutral buttons */
+        color: #ffffff;
+        border: 1px solid #3a4049;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        font-weight: 500;
+        font-size: 14px;
+        border-radius: 4px;
+    }
+
+.custom-rbt-group label.e-btn {
+    box-shadow: none !important;
+}
+
+.e-btn-group.custom-rbt-group .e-btn:hover {
+    background-color: #39414b; /* Slightly lighter on hover */
+    border-color: #4a5563;
+}
+
+.e-btn-group.custom-rbt-group input:checked + label.e-btn {
+    background-color: #ffffff;
+    color: #1a1a1a;
+    border-color: #ffffff;
+    font-weight: 600;
+}
+
+
+/*SideBar*/
+#sidebar {
+    background-color: #12161d;
+    border-right: 1px dashed rgba(75,82,85,0.24);
+    padding: 10px 20px;
+    overflow: hidden;
+}
