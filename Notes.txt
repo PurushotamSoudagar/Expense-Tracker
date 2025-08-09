@@ -1,0 +1,2 @@
+Completed till Desisgning Category Controller.
+Creation of Transcation controller Pending, from time- 1:13:30
