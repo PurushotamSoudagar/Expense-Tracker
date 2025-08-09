@@ -1,2 +1,2 @@
-Completed till Desisgning Category Controller.
-Creation of Transcation controller Pending, from time- 1:13:30
+Completed till Adding Transcation Controller.
+Adding Syncfusion component for Form is pending Pending, from time- 1:18:57
