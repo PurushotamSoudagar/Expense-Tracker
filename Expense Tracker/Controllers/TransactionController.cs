@@ -28,10 +28,13 @@ namespace Expense_Tracker.Controllers
    
 
         // GET: Transaction/AddOrEdit
-        public IActionResult AddOrEdit()
+        public IActionResult AddOrEdit(int id=0)
         {
             PopulateCategories();
-            return View(new Transaction());
+            if(id==0)
+                return View(new Transaction());
+            else
+             return View(_context.Transactions.Find(id));
         }
 
         // POST: Transaction/Create
@@ -43,30 +46,34 @@ namespace Expense_Tracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(transaction);
+                if (transaction.TransactionId == 0)
+                     _context.Add(transaction);
+                else
+                    _context.Update(transaction);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", transaction.CategoryId);
+            PopulateCategories();
             return View(transaction);
         }
-  // GET: Transaction/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+ 
+        // POST: Transaction/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (id == null)
+            if(_context.Transactions == null)
             {
-                return NotFound();
+                return Problem("Entity set 'ApplicationDbContext.Transactions' is null.");
             }
-
-            var transaction = await _context.Transactions
-                .Include(t => t.Category)
-                .FirstOrDefaultAsync(m => m.TransactionId == id);
-            if (transaction == null)
+            var transaction = await _context.Transactions.FindAsync(id);
+            if (transaction != null)
             {
-                return NotFound();
+                _context.Transactions.Remove(transaction);
             }
-
-            return View(transaction);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         [NonAction]

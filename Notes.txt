@@ -1,2 +1,2 @@
-Completed till Adding Transcation Controller.
-Adding Syncfusion component for Form is pending Pending, from time- 1:18:57
+Completed till Transcation Controller.
+Dashboard DesigingF orm is Pending, from time- 1:42:08
