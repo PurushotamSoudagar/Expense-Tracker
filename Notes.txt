@@ -1,2 +1,2 @@
-Completed till Transcation Controller.
-Dashboard DesigingF orm is Pending, from time- 1:42:08
+Completed till dashboard balance desiging
+Dashboard Desiging , from time- 1:54:15

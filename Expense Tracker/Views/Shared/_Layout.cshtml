@@ -13,6 +13,20 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Expense_Tracker.styles.css" asp-append-version="true" />
     <script src="https://cdn.syncfusion.com/ej2/30.1.40/dist/ej2.min.js"></script>
+    <script>
+      
+        Promise.all([
+            fetch('/cldr-data/supplemental/numberingSystems.json').then(r => r.json()),
+            fetch('/cldr-data/main/en-IN/numbers.json').then(r => r.json()),
+            fetch('/cldr-data/main/en-IN/currencies.json').then(r => r.json())
+        ]).then(function (data) {
+            ej.base.loadCldr(data[0], data[1], data[2]);
+            ej.base.setCulture('en-IN');
+            ej.base.setCurrencyCode('INR');
+         
+        });
+    </script>
+
 </head>
 <body class="e-bigger">
     <partial name="_Sidebar"/>
