@@ -28,7 +28,7 @@ namespace Expense_Tracker.Controllers
             int TotalIncome = SelectTransactions
                 .Where(i => i.Category != null && i.Category.Type == "Income") // Added null check for Category
                 .Sum(j => j.Amount);
-            CultureInfo incomeculture = CultureInfo.CreateSpecificCulture("en-In");
+            CultureInfo incomeculture = CultureInfo.CreateSpecificCulture("en-IN");
             incomeculture.NumberFormat.CurrencySymbol = "₹";
             ViewBag.TotalIncome = String.Format(incomeculture, "{0:C}", TotalIncome);
            
@@ -37,17 +37,32 @@ namespace Expense_Tracker.Controllers
             int TotalExpense = SelectTransactions
                 .Where(e => e.Category != null && e.Category.Type == "Expense") // Added null check for Category
                 .Sum(j => j.Amount);
-            CultureInfo expenseculture = CultureInfo.CreateSpecificCulture("en-In");
+            CultureInfo expenseculture = CultureInfo.CreateSpecificCulture("en-IN");
             expenseculture.NumberFormat.CurrencySymbol = "₹";
             ViewBag.TotalExpense = String.Format(expenseculture, "{0:C}", TotalExpense);
          
 
             // Balance
             int Balance = TotalIncome - TotalExpense;
-            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-In");
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-IN");   
             culture.NumberFormat.CurrencyNegativePattern = 1;
             culture.NumberFormat.CurrencySymbol = "₹";
             ViewBag.Balance = String.Format(culture, "{0:C}",Balance);
+
+            //Doughnut Chart- Expense By Category
+            ViewBag.DoughnutChart = SelectTransactions
+                .Where(i => i.Category.Type == "Expense")
+                .GroupBy(j => j.Category.CategoryId)
+                .Select(k => new
+                {
+                    categoryTitleWithIcon = k.First().Category.Icon+" "+k.First().Category.Title,
+                    amount = k.Sum(j => j.Amount),
+                    formattedAmount = k.Sum(j => j.Amount).ToString("C0"),
+
+                })
+                .ToList();
+             
+
             return View();
         }
     }
