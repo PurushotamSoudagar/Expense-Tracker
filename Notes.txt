@@ -1,2 +1,2 @@
-Completed till dashboard balance desiging
-Dashboard Desiging , from time- 1:54:15
+Completed till dashboard desiging adding Doughnet Chart
+Dashboard Desiging pending to add Spline chart , from time- 2:0:3
