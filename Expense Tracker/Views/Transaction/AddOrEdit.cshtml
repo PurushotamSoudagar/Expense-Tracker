@@ -24,7 +24,7 @@
             </div>
             <div class="mb-3">
                     <ejs-numerictextbox id="amount" ejs-for="Amount" placeholder="Amount"
-                        floatLabelType="Always" min="0" format="C"/>
+                 floatLabelType="Always" min="0" format="c0" currency="INR" />
                     <span asp-validation-for="Amount" class="text-danger" fs-3></span>
             </div>
             <div class="mb-3">
@@ -48,3 +48,4 @@
 @*@section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }*@
+
