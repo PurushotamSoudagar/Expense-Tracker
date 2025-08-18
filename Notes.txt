@@ -1,2 +1,2 @@
-Completed desiging dashboard and nav bar.
-Sidebar Desiging pending , from time- 2:23:38
+Completed desigingand adding functionality to SideBar
+Completed course
