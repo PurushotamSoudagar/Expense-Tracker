@@ -1,0 +1,14 @@
+# Ignore HTML, CSS, and JS files from language stats
+*.html linguist-detect=false
+*.css linguist-detect=false
+*.js linguist-detect=false
+
+# Ignore auto-generated files in wwwroot or similar
+wwwroot/* linguist-vendored
+
+# Treat razor views (.cshtml) as C#
+*.cshtml linguist-language=C#
+
+# Optional: if you use designer files or auto-generated code
+*.Designer.cs linguist-generated
+*.g.cs linguist-generated
