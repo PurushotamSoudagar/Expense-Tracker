@@ -60,10 +60,63 @@ namespace Expense_Tracker.Controllers
                     formattedAmount = k.Sum(j => j.Amount).ToString("C0"),
 
                 })
+                .OrderBy(l=> l.amount)
                 .ToList();
-             
+
+            //Spline-Chart- Income Vs Expense
+            //Income
+            List<SplineChartData> IncomeSummary = SelectTransactions
+                .Where(i => i.Category.Type == "Income")
+                .GroupBy(j => j.Date)
+                .Select(k => new SplineChartData
+                {
+                    day = k.First().Date.ToString("dd-MM"),
+                    income = k.Sum(j => j.Amount),
+                   
+                })
+                .ToList();
+            //Expense
+            List<SplineChartData> ExpenseSummary = SelectTransactions
+               .Where(i => i.Category.Type == "Expense")
+               .GroupBy(j => j.Date)
+               .Select(k => new SplineChartData
+               {
+                   day = k.First().Date.ToString("dd-MM"),
+                   expense = k.Sum(j => j.Amount),
+               })
+               .ToList();
+
+            //combine Income and expense
+            string[] Last7days = Enumerable.Range(0, 7)
+                .Select(i => StartDate.AddDays(i).ToString("dd-MM"))
+                .ToArray();
+
+            ViewBag.SplineChartData = from day in Last7days
+                                  join income in IncomeSummary on day equals income.day into dayincomeJoined
+                                  from income in dayincomeJoined.DefaultIfEmpty()
+                                  join expense in ExpenseSummary on day equals expense.day into dayexpenseJoined
+                                  from expense in dayexpenseJoined.DefaultIfEmpty()
+                                  select new
+                                  {
+                                      day = day,
+                                      income = income ==null? 0: income.income, // Use null-coalescing operator to handle nulls
+                                      expense = expense == null? 0: expense.expense, // Use null-coalescing operator to handle nulls
+                                      
+                                  };
+            //Recent Transactions
+            ViewBag.RecentTransactions = await _context.Transactions
+                .Include(i => i.Category)
+                .OrderByDescending(j => j.Date)
+                .Take(5)
+                .ToListAsync();
 
             return View();
         }
+    }
+    public class SplineChartData
+    {
+        public string day;
+        public int income;
+        public int expense;
     }
 }

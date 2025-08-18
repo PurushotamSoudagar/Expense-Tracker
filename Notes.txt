@@ -1,2 +1,2 @@
-Completed till dashboard desiging adding Doughnet Chart
-Dashboard Desiging pending to add Spline chart , from time- 2:0:3
+Completed desiging dashboard and nav bar.
+Sidebar Desiging pending , from time- 2:23:38
