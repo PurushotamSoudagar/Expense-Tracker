@@ -5,6 +5,57 @@
     ViewData["isDashboard"] = true;
 }
 @*Summary Widgets*@
+@*Date selector*@
+<div class="row">
+    <form asp-action="Index" asp-controller="Dashboard" method="post">
+        <div class="row align-items-end">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <ejs-daterangepicker id="DateRange"
+                                         startDate="@ViewBag.StartDate"
+                                         endDate="@ViewBag.EndDate"
+                                         format="dd-MM-yyyy"
+                                         locale="en-IN"
+                                         placeholder="Select date range"
+                                         max="@DateTime.Now">
+                    </ejs-daterangepicker>
+                </div>
+            </div>
+
+            <div class="col-md-2 mb-3">
+                <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </div>
+
+        <!-- These are what ASP.NET will bind -->
+        <input type="hidden" id="DateStart" name="DateStart" value="@ViewBag.StartDate" />
+        <input type="hidden" id="DateEnd" name="DateEnd" value="@ViewBag.EndDate" />
+    </form>
+</div>
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="p-3 bg-dark border-start border-4 border-info rounded shadow-sm">
+            <h6 class="fw-bold text-light-50 mb-1">
+                Transaction Period
+            </h6>
+            <h5 class="fw-semibold text-light mb-0">
+                From
+                <span class="text-info fw-bold">
+                    @Convert.ToDateTime(ViewBag.StartDate).ToString("dd-MM-yyyy")
+                </span>
+                to
+                <span class="text-warning fw-bold">
+                    @Convert.ToDateTime(ViewBag.EndDate).ToString("dd-MM-yyyy")
+                </span>
+            </h5>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 @*Total Income*@
 <div class="row mb-4">
     <div class="col-md-4">
@@ -112,7 +163,7 @@
                           dataSource="@ViewBag.RecentTransactions" gridLines="None">
                     <e-grid-columns>
                         <e-grid-column headerText="Category" field="CategoryTitleWithIcon"></e-grid-column>
-                        <e-grid-column headerText="Date" field="Date" type="date" format="MMM-dd-yy"></e-grid-column>
+                        <e-grid-column headerText="Date" field="Date" type="date" format="dd-MM-yy"></e-grid-column>
                         <e-grid-column headerText="Amount" field="FormattedAmount" textAlign="Right"></e-grid-column>
                     </e-grid-columns>
                 </ejs-grid>
@@ -127,3 +178,11 @@
         </div>
     </div>
 </div>
+<script>
+    // Before form submission, inject picker values into hidden fields
+     document.querySelector("form").addEventListener("submit", function () {
+         var drp = document.getElementById("DateRange").ej2_instances[0];
+         document.getElementById("DateStart").value = drp.startDate ? drp.startDate.toISOString() : "";
+         document.getElementById("DateEnd").value = drp.endDate ? drp.endDate.toISOString() : "";
+    });
+</script>

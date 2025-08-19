@@ -13,16 +13,21 @@ namespace Expense_Tracker.Controllers
         {
             _context = context;
         }
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(DateTime? DateStart, DateTime? DateEnd)
         {
-            // Last 7 days Transactions
-            DateTime StartDate = DateTime.Today.AddDays(-6);
-            DateTime EndDate = DateTime.Today;
+            // Total In range
 
-            List<Transaction> SelectTransactions = await _context.Transactions
+            DateTime StartDate = DateStart ?? DateTime.Now.AddDays(-7);
+            DateTime EndDate = DateEnd ?? DateTime.Now;
+            // Pass selected range to ViewBag for DateRangePicker
+            ViewBag.StartDate = StartDate.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = EndDate.ToString("yyyy-MM-dd");
+
+            var SelectTransactions = await _context.Transactions
                 .Include(x => x.Category)
                 .Where(y => y.Date >= StartDate && y.Date <= EndDate)
                 .ToListAsync();
+
 
             // Total Income
             int TotalIncome = SelectTransactions
@@ -87,11 +92,11 @@ namespace Expense_Tracker.Controllers
                .ToList();
 
             //combine Income and expense
-            string[] Last7days = Enumerable.Range(0, 7)
+            string[] range = Enumerable.Range(0, (EndDate - StartDate).Days + 1)
                 .Select(i => StartDate.AddDays(i).ToString("dd-MM"))
                 .ToArray();
 
-            ViewBag.SplineChartData = from day in Last7days
+            ViewBag.SplineChartData = from day in range
                                   join income in IncomeSummary on day equals income.day into dayincomeJoined
                                   from income in dayincomeJoined.DefaultIfEmpty()
                                   join expense in ExpenseSummary on day equals expense.day into dayexpenseJoined

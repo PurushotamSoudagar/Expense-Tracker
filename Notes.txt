@@ -1,2 +1,1 @@
-Completed desigingand adding functionality to SideBar
-Completed course
+Added the Date Range filed to filter Transaction within The date Range, also added validation to avoid future date selection
