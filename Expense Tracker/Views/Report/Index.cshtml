@@ -1,0 +1,119 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["isReport"] = true;
+   
+}
+
+<div class="container mt-4">
+    <h2 class="fw-bold">Reports</h2>
+
+    <!-- Filters -->
+    <div class="filters" style="display:flex; gap:15px; margin-bottom:20px;">
+        <ejs-dropdownlist id="ddlMonth"
+                         
+                          placeholder="Select Month">
+        </ejs-dropdownlist>
+
+        <ejs-dropdownlist id="ddlCategory"
+                          
+                          placeholder="Select Category">
+        </ejs-dropdownlist>
+
+        <ejs-dropdownlist id="ddlPayment"
+                          
+                          placeholder="Select Payment Mode">
+        </ejs-dropdownlist>
+    </div>
+
+
+    <!-- Dashboard Grid -->
+    <div class="row g-4">
+
+        <!-- Top Categories -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card p-3">
+                <h5 class="fw-bold">Top categories</h5>
+                <ejs-chart id="topCategoriesChart" height="250px">
+                    <e-chart-primaryxaxis valueType="Category"></e-chart-primaryxaxis>
+                    <e-series-collection>
+                        <e-series type="Bar"
+                                  xName="Category" yName="Amount"
+                                  dataSource="@(new[]{
+                      new { Category="Food", Amount=200 },
+                      new { Category="Rent", Amount=8500 },
+                      new { Category="Travel", Amount=6200 },
+                      new { Category="Shopping", Amount=5400 },
+                      new { Category="Bills", Amount=2800 }
+                  })">
+                        </e-series>
+                    </e-series-collection>
+                </ejs-chart>
+            </div>
+        </div>
+
+        <!-- Budget vs Actual -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card p-3">
+                <h5 class="fw-bold">Budget vs Actual</h5>
+                <ejs-chart id="budgetChart" height="200px">
+                    <e-chart-primaryxaxis valueType="Category"></e-chart-primaryxaxis>
+                    <e-series-collection>
+                        <e-chart-series type="Bar"
+                                        xName="Label" yName="Value"
+                                        dataSource="@(new[]{
+                                            new { Label="Budget", Value=20000 },
+                                            new { Label="Actual", Value=17500 }
+                                        })">
+                        </e-chart-series>
+                    </e-series-collection>
+                </ejs-chart>
+            </div>
+        </div>
+
+        <!-- Recurring Expenses -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card p-3">
+                <h5 class="fw-bold">Recurring expenses</h5>
+                <ul class="list-unstyled">
+                    <li>Netflix - ₹499</li>
+                    <li>Spotify - ₹199</li>
+                    <li>Rent - ₹8,500</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Spending Heatmap -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card p-3">
+                <h5 class="fw-bold">Spending heatmap</h5>
+                <ejs-calendar id="calendar" isMultiSelection="true"
+                              values="@(new DateTime[]{ new DateTime(DateTime.Now.Year, DateTime.Now.Month, 14),
+                                                        new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15),
+                                                        new DateTime(DateTime.Now.Year, DateTime.Now.Month, 17),
+                                                        new DateTime(DateTime.Now.Year, DateTime.Now.Month, 20),
+                                                        new DateTime(DateTime.Now.Year, DateTime.Now.Month, 24) })">
+                </ejs-calendar>
+            </div>
+        </div>
+
+        <!-- Insights -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card p-3">
+                <h5 class="fw-bold">Insights</h5>
+                <div class="mb-2">
+                    <strong>Biggest expense this month:</strong> ₹8,500 on Rent
+                </div>
+                <div class="mb-2">
+                    <strong>You spent 15% more</strong> on Shopping than last month
+                </div>
+                <div>
+                    At this rate, you'll spend <strong>₹25,000</strong> next month
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+

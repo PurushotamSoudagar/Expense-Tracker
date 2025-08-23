@@ -49,9 +49,9 @@
         <div class="main-content">
             <div class="container mt-5">
                 <div class="row justify-content-center">
-                        <div class=@(ViewData["isDashboard"] == null?"col-md-10":"col-md-12")>
+                        <div class=@(ViewData["isDashboard"]==null || ViewData["isReport"] == null?"col-md-10":"col-md-12")>
                             <main role="main" class="pb-3">
-                                @if (ViewData["isDashboard"] == null)
+                            @if (!((ViewData["isDashboard"] as bool? ?? false) || (ViewData["isReport"] as bool? ?? false)))
                                 {
                                     <div class="row">
                                         <div class="col-md-7">
