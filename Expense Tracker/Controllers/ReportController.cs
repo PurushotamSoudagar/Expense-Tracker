@@ -52,8 +52,6 @@ namespace Expense_Tracker.Controllers
 
             ViewBag.ExpenseComparison = expenseComparison;
 
-            //ColChart
-
             // Bar Chart
             List<BarChartData> ExpenseSummary = SelectTransactions
                 .Where(i => i.Category.Type == "Expense")
@@ -67,8 +65,12 @@ namespace Expense_Tracker.Controllers
 
             ViewBag.ExpenseSummary = ExpenseSummary;
 
-           
-
+            // Heat Map
+            var heatMapData = SelectTransactions
+                            .Select(t => t.Date.Date)   // just the date part
+                            .Distinct()
+                            .ToList();
+            ViewBag.HeatMapData = heatMapData;
 
             return View();
         }

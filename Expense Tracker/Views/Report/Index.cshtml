@@ -1,7 +1,9 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
 *@
 @{
+ 
     ViewData["isReport"] = true;
    
 }
@@ -100,8 +102,6 @@
             </div>
         </div>
 
-
-
         <!-- Recurring Expenses -->
         <div class="col-md-6 col-lg-4">
             <div class="card p-3">
@@ -116,15 +116,10 @@
 
         <!-- Spending Heatmap -->
         <div class="col-md-6 col-lg-4">
-            <div class="card p-3">
-                <h5 class="fw-bold">Spending heatmap</h5>
-                <ejs-calendar id="calendar" isMultiSelection="true"
-                              values="@(new DateTime[]{ new DateTime(DateTime.Now.Year, DateTime.Now.Month, 14),
-                                                        new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15),
-                                                        new DateTime(DateTime.Now.Year, DateTime.Now.Month, 17),
-                                                        new DateTime(DateTime.Now.Year, DateTime.Now.Month, 20),
-                                                        new DateTime(DateTime.Now.Year, DateTime.Now.Month, 24) })">
-                </ejs-calendar>
+            <div class="card p-3" style="background-color:#1a222b; color:#fff; ">
+                <h5 class="fw-bold">Spending heatmap of @ViewBag.SelectedMonth </h5>
+                <ejs-calendar id="calendar" renderDayCell="highlightTransactionDates" value="@ViewBag.SelectedMonth"
+                max="DateTime.Now" showTodayButton="false"></ejs-calendar>
             </div>
         </div>
 
@@ -156,5 +151,30 @@
         : "";
     });
 </script>
+<script>
+    // 👇 This will generate a clean JS array of Date objects
+    var transactionDates = [
+    @foreach (var d in ViewBag.HeatMapData as List<DateTime>)
+    {
+        @: new Date("@d.ToString("yyyy-MM-dd")"),
+    }
+    ];
+</script>
+<script>
+    function highlightTransactionDates(args) {
+        for (var i = 0; i < transactionDates.length; i++) {
+            if (args.date.toDateString() === transactionDates[i].toDateString()) {
+                args.element.classList.add("transaction-day");
+            }
+        }
+    }
+</script>
 
+<style>
+    .e-calendar .transaction-day {
+        background-color: #2d8c78 !important;
+        color: #fff !important;
+        border-radius: 25%;
+    }
+</style>
 
