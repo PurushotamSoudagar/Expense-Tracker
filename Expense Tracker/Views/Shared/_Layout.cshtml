@@ -47,37 +47,38 @@
                 </div>
             </nav>
         <div class="main-content">
-            <div class="container mt-5">
+            <div class="container mt-2">
                 <div class="row justify-content-center">
-                        <div class=@(ViewData["isDashboard"]==null || ViewData["isReport"] == null?"col-md-10":"col-md-12")>
-                            <main role="main" class="pb-3">
-                            @if (!((ViewData["isDashboard"] as bool? ?? false) || (ViewData["isReport"] as bool? ?? false)))
-                                {
-                                    <div class="row">
-                                        <div class="col-md-7">
-                                            <div class="d-flex flex-column mb-5">
-                                                <div class="d-flex mb-1">
-                                                    <div class="flex-grow-1">
-                                                        <h3 class="fw-bold">@ViewData["PageTitle"]</h3>
-                                                    </div>
-                                                    <div>
-                                                        @if (ViewData["PageActionText"] != null)
-                                                        {
-                                                            <a class="btn btn-success" href="@ViewData["PageActionUrl"]">
-                                                                @ViewData["PageActionText"]
-                                                            </a>
-                                                        }
-                                                    </div>
+                    <div class="@(ViewData["isDashboard"] != null || ViewData["isReport"] != null ? "col-md-12" : "col-md-10")">
+                        <main role="main" class="pb-3">
+                            @if (ViewData["isDashboard"] == null && ViewData["isReport"] == null)
+                            {
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <div class="d-flex flex-column mb-5">
+                                            <div class="d-flex mb-1">
+                                                <div class="flex-grow-1">
+                                                    <h3 class="fw-bold">@ViewData["PageTitle"]</h3>
                                                 </div>
-                                                <ejs-breadcrumb id="breadcrumb"
-                                                                separatorTemplate="@Html.Raw("<span class='fa-solid fa-angle-right'></span>")"></ejs-breadcrumb>
+                                                <div>
+                                                    @if (ViewData["PageActionText"] != null)
+                                                    {
+                                                        <a class="btn btn-success" href="@ViewData["PageActionUrl"]">
+                                                            @ViewData["PageActionText"]
+                                                        </a>
+                                                    }
+                                                </div>
                                             </div>
+                                            <ejs-breadcrumb id="breadcrumb"
+                                                            separatorTemplate="@Html.Raw("<span class='fa-solid fa-angle-right'></span>")"></ejs-breadcrumb>
                                         </div>
                                     </div>
-                                }
-                                @RenderBody()
-                            </main>
+                                </div>
+                            }
+                            @RenderBody()
+                        </main>
                     </div>
+
                 </div>
             </div>
         </div>

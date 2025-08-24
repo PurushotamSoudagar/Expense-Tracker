@@ -10,21 +10,33 @@
     <h2 class="fw-bold">Reports</h2>
 
     <!-- Filters -->
-    <div class="filters" style="display:flex; gap:15px; margin-bottom:20px;">
-        <ejs-dropdownlist id="ddlMonth"
-                         
-                          placeholder="Select Month">
-        </ejs-dropdownlist>
+    <div class="row">
+        <form asp-action="Index" asp-controller="Report" method="post">
+            <div class="row align-items-end">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <ejs-datepicker id="MonthYearPicker"
+                                        format="MMMM yyyy"
+                                        start="Year"
+                                        depth="Year"
+                                        placeholder="Select Month and Year"
+                                        value="@ViewBag.SelectedMonth"
+                                        max="@DateTime.Now"
+                                        showTodayButton="false">
 
-        <ejs-dropdownlist id="ddlCategory"
-                          
-                          placeholder="Select Category">
-        </ejs-dropdownlist>
+                        </ejs-datepicker>
 
-        <ejs-dropdownlist id="ddlPayment"
-                          
-                          placeholder="Select Payment Mode">
-        </ejs-dropdownlist>
+                    </div>
+                </div>
+
+                <div class="col-md-2 mb-3">
+                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </div>
+
+            <!-- These are what ASP.NET will bind -->
+            <input type="hidden" id="Month" name="Month" value="@ViewBag.SelectedMonth" />
+        </form>
     </div>
 
 
@@ -33,44 +45,62 @@
 
         <!-- Top Categories -->
         <div class="col-md-6 col-lg-4">
-            <div class="card p-3">
+            <div class="card p-3" style="background-color:#1a222b;color:#fff; height:300px;">
                 <h5 class="fw-bold">Top categories</h5>
-                <ejs-chart id="topCategoriesChart" height="250px">
-                    <e-chart-primaryxaxis valueType="Category"></e-chart-primaryxaxis>
+                <ejs-chart id="topCategoriesChart" width="100%" height="100%">
+                    <e-chart-tooltipsettings enable="true" format="${point.x} : ${point.y}"></e-chart-tooltipsettings>
+                    <e-chart-primaryxaxis valueType="Category">
+                        <e-majorgridlines width="0"></e-majorgridlines>
+                        <e-labelstyle color="white" size="14px" fontFamily="Segoe UI"></e-labelstyle>
+                    </e-chart-primaryxaxis>
+                    <e-chart-primaryyaxis>
+                        <e-labelstyle color="white" size="14px" fontFamily="Segoe UI"></e-labelstyle>
+                        </e-chart-primaryyaxis>
                     <e-series-collection>
                         <e-series type="Bar"
-                                  xName="Category" yName="Amount"
-                                  dataSource="@(new[]{
-                      new { Category="Food", Amount=200 },
-                      new { Category="Rent", Amount=8500 },
-                      new { Category="Travel", Amount=6200 },
-                      new { Category="Shopping", Amount=5400 },
-                      new { Category="Bills", Amount=2800 }
-                  })">
+                                  xName="Category"
+                                  yName="Amount"
+                                  dataSource="@(ViewBag.ExpenseSummary)">
+                        </e-series>
+                    </e-series-collection>
+ 
+                </ejs-chart>
+            </div>
+        </div>
+
+        <!-- Year-to-Date vs Last Year-to-Date -->
+       
+        <div class="col-md-6 col-lg-4">
+            <div class="card p-3" style="background-color:#1a222b; color:#fff; height:300px;">
+                <h5 class="fw-bold">Monthly Expense Trend</h5>
+                <ejs-chart id="expenseComparisonChart" width="100%" height="100%">
+                    <e-chart-primaryxaxis valueType="Category">
+                        <e-majorgridlines width="0"></e-majorgridlines>
+                        <e-labelstyle color="white" size="14px" fontFamily="Segoe UI"></e-labelstyle>
+                    </e-chart-primaryxaxis>
+                    <e-chart-primaryyaxis>
+                        <e-labelstyle color="white" size="14px" fontFamily="Segoe UI"></e-labelstyle>
+                    </e-chart-primaryyaxis>
+                    <e-chart-legendsettings visible="true" position="Top" toggleVisibility="false">
+                    <e-legendsettings-textstyle size="1rem" color="#fff" />
+                    </e-chart-legendsettings>
+                    <e-series-collection>
+                        <e-series type="Column"
+                                  xName="Month" yName="ThisYear"
+                                  name="This Year"
+                                  dataSource="ViewBag.ExpenseComparison">
+                        </e-series>
+                        <e-series type="Column"
+                                  xName="Month" yName="LastYear"
+                                  name="Last Year"
+                                  dataSource="ViewBag.ExpenseComparison">
                         </e-series>
                     </e-series-collection>
                 </ejs-chart>
             </div>
         </div>
 
-        <!-- Budget vs Actual -->
-        <div class="col-md-6 col-lg-4">
-            <div class="card p-3">
-                <h5 class="fw-bold">Budget vs Actual</h5>
-                <ejs-chart id="budgetChart" height="200px">
-                    <e-chart-primaryxaxis valueType="Category"></e-chart-primaryxaxis>
-                    <e-series-collection>
-                        <e-chart-series type="Bar"
-                                        xName="Label" yName="Value"
-                                        dataSource="@(new[]{
-                                            new { Label="Budget", Value=20000 },
-                                            new { Label="Actual", Value=17500 }
-                                        })">
-                        </e-chart-series>
-                    </e-series-collection>
-                </ejs-chart>
-            </div>
-        </div>
+
 
         <!-- Recurring Expenses -->
         <div class="col-md-6 col-lg-4">
@@ -116,4 +146,15 @@
 
     </div>
 </div>
+<script>
+    // Before form submission, inject picker values into hidden fields
+     document.querySelector("form").addEventListener("submit", function () {
+    var SelectMonth = document.getElementById("MonthYearPicker").ej2_instances[0].value; // JS Date
+
+    document.getElementById("Month").value = SelectMonth
+        ? SelectMonth.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })
+        : "";
+    });
+</script>
+
 
