@@ -41,13 +41,10 @@
         </form>
     </div>
 
-
-    <!-- Dashboard Grid -->
-    <div class="row g-4">
-
+    <div class="row row d-flex align-items-stretch">
         <!-- Top Categories -->
-        <div class="col-md-6 col-lg-4">
-            <div class="card p-3" style="background-color:#1a222b;color:#fff; height:300px;">
+        <div class="col-md-4 d-flex">
+            <div class="card w-100 h-100 p-3" style="background-color:#1a222b;color:#fff; height:300px;">
                 <h5 class="fw-bold">Top categories</h5>
                 <ejs-chart id="topCategoriesChart" width="100%" height="100%">
                     <e-chart-tooltipsettings enable="true" format="${point.x} : ${point.y}"></e-chart-tooltipsettings>
@@ -72,8 +69,8 @@
 
         <!-- Year-to-Date vs Last Year-to-Date -->
        
-        <div class="col-md-6 col-lg-4">
-            <div class="card p-3" style="background-color:#1a222b; color:#fff; height:300px;">
+        <div class="col-md-4 d-flex">
+            <div class="card w-100 h-100 p-3" style="background-color:#1a222b; color:#fff; height:300px;">
                 <h5 class="fw-bold">Monthly Expense Trend</h5>
                 <ejs-chart id="expenseComparisonChart" width="100%" height="100%">
                     <e-chart-primaryxaxis valueType="Category">
@@ -101,46 +98,54 @@
                 </ejs-chart>
             </div>
         </div>
-
-        <!-- Recurring Expenses -->
-        <div class="col-md-6 col-lg-4">
-            <div class="card p-3">
-                <h5 class="fw-bold">Recurring expenses</h5>
-                <ul class="list-unstyled">
-                    <li>Netflix - ₹499</li>
-                    <li>Spotify - ₹199</li>
-                    <li>Rent - ₹8,500</li>
-                </ul>
-            </div>
-        </div>
-
         <!-- Spending Heatmap -->
-        <div class="col-md-6 col-lg-4">
-            <div class="card p-3" style="background-color:#1a222b; color:#fff; ">
+        <div class="col-md-4 d-flex">
+            <div class="card w-100 h-100 p-3" style="background-color:#1a222b; color:#fff; height:300px;">
                 <h5 class="fw-bold">Spending heatmap of @ViewBag.SelectedMonth </h5>
-                <ejs-calendar id="calendar" renderDayCell="highlightTransactionDates" value="@ViewBag.SelectedMonth"
-                max="DateTime.Now" showTodayButton="false"></ejs-calendar>
-            </div>
-        </div>
-
-        <!-- Insights -->
-        <div class="col-md-6 col-lg-4">
-            <div class="card p-3">
-                <h5 class="fw-bold">Insights</h5>
-                <div class="mb-2">
-                    <strong>Biggest expense this month:</strong> ₹8,500 on Rent
-                </div>
-                <div class="mb-2">
-                    <strong>You spent 15% more</strong> on Shopping than last month
-                </div>
-                <div>
-                    At this rate, you'll spend <strong>₹25,000</strong> next month
+                <div class="d-flex justify-content-center align-items-center h-100">
+                    <ejs-calendar id="calendar"
+                                  renderDayCell="highlightTransactionDates"
+                                  value="@ViewBag.SelectedMonth"
+                                  max="DateTime.Now"
+                                  showTodayButton="false"
+                                  created="onCalendarCreated">
+                    </ejs-calendar>
                 </div>
             </div>
         </div>
 
     </div>
-</div>
+    <div class="row d-flex">
+        <!-- Recurring Expenses -->
+        <div class="col-md-8">
+            <div class="card p-3 mt-4 shadow-lg border-0"
+                 style="background-color:#1a222b; color:#fff; border-radius:12px;">
+
+                <!-- Title -->
+                <h5 class="fw-bold mb-4" style="color:#f1f1f1;">
+                    📊Top 5 Categories with Most Transactions in @ViewBag.SelectedMonth
+                </h5>
+
+                <ul class="list-unstyled">
+                    @foreach (var item in @ViewBag.FrequentTransactions)
+                    {
+                        <li class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center p-3 rounded"
+                                 style="background:#2a2f36; color:white; border-left:4px solid #4e9cff; transition:0.3s;">
+
+                                <span style="font-weight:500; font-size:1.2rem;">
+                                    @item.Category <br>
+                                    <small class="badge bg-warning text-dark" >
+                                        💰 ₹@item.Amount  Spent over @item.Count transactions for <strong>@item.Category</strong>
+                                    </small>
+                                </span>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+     
 <script>
     // Before form submission, inject picker values into hidden fields
      document.querySelector("form").addEventListener("submit", function () {
@@ -152,7 +157,7 @@
     });
 </script>
 <script>
-    // 👇 This will generate a clean JS array of Date objects
+    // This will generate a clean JS array of Date objects
     var transactionDates = [
     @foreach (var d in ViewBag.HeatMapData as List<DateTime>)
     {
@@ -169,7 +174,13 @@
         }
     }
 </script>
-
+<script>
+    function onCalendarCreated(args) {
+        // Remove the default selection after render
+        var calendarObj = document.getElementById("calendar").ej2_instances[0];
+        calendarObj.value = null;   // clears selection but keeps month view
+    }
+</script>
 <style>
     .e-calendar .transaction-day {
         background-color: #2d8c78 !important;

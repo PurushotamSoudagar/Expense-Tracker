@@ -65,6 +65,22 @@ namespace Expense_Tracker.Controllers
 
             ViewBag.ExpenseSummary = ExpenseSummary;
 
+            //Frequent Transaction
+            List<BarChartData> FrequentTransactions = SelectTransactions
+                .Where(i => i.Category.Type == "Expense")
+                .GroupBy(j => j.Category.Title)  // Group by Category
+                .Select(k => new BarChartData
+                {
+                    Category = k.Key,// Category name
+                    Count = k.Count(), // count of transactions in that category
+                    Amount = k.Sum(j => j.Amount) // Sum of all amounts in that category
+                   
+                })
+                .OrderByDescending(c=>c.Count) // Order by descending count
+                .Take(5) // take only top 5 Categories
+                .ToList();
+            ViewBag.FrequentTransactions = FrequentTransactions;
+
             // Heat Map
             var heatMapData = SelectTransactions
                             .Select(t => t.Date.Date)   // just the date part
@@ -79,6 +95,7 @@ namespace Expense_Tracker.Controllers
     {
          public string Category { get; set; }
     public decimal Amount { get; set; }  
+    public int Count { get; set; }  
     }
  
 }
