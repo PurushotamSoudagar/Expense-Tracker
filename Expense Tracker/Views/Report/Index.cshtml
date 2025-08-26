@@ -131,13 +131,16 @@
                     {
                         <li class="mb-3">
                             <div class="d-flex justify-content-between align-items-center p-3 rounded"
-                                 style="background:#2a2f36; color:white; border-left:4px solid #4e9cff; transition:0.3s;">
-
+                                 style="background:#2a2f36; color:white; border-left:4px solid #4e9cff; transition:0.3s;">   
                                 <span style="font-weight:500; font-size:1.2rem;">
-                                    @item.Category <br>
-                                    <small class="badge bg-warning text-dark" >
-                                        💰 ₹@item.Amount  Spent over @item.Count transactions for <strong>@item.Category</strong>
+                                    @item.Category<br />
+                                    <small class="badge bg-warning text-dark">
+                                        💰 Spent ₹@item.Amount in this month for <strong>@item.Category</strong>
+
                                     </small>
+                                    </span>
+                                    <span>
+                                    <small class="badge bg-primary rounded-pill" style="text-align:right;"> Total @(item.Count == 1 ? "Transaction" : "Transactions") : @item.Count</small>
                                 </span>
                             </div>
                         </li>
